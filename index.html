@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내남팸의 티어리스트!</title>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --panel-bg: rgba(22, 28, 45, 0.7);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --accent-glow: #6366f1;
+      --text-main: #f3f4f6;
+      --text-sub: #9ca3af;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      padding: 30px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-container { width: 100%; max-width: 1100px; }
+    .header { text-align: center; margin-bottom: 25px; }
+
+    .main-title {
+      font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 35px;
+      background: var(--panel-bg);
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-sub);
+      padding: 12px 24px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .panel-box {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      padding: 25px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
+    }
+
+    .panel-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tier-board {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 25px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--panel-border);
+    }
+
+    .tier-row {
+      display: flex;
+      min-height: 75px;
+      background: rgba(15, 23, 42, 0.6);
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .tier-label {
+      width: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .tier-S { background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; }
+    .tier-A { background: linear-gradient(135deg, #ffa502, #ff7f50); color: #fff; }
+    .tier-B { background: linear-gradient(135deg, #eccc68, #ffa502); color: #1e293b; }
+    .tier-C { background: linear-gradient(135deg, #2ed573, #7bed9f); color: #1e293b; }
+    .tier-D { background: linear-gradient(135deg, #1e90ff, #70a1ff); color: #fff; }
+    .tier-E { background: linear-gradient(135deg, #a55eea, #d6a2e8); color: #fff; }
+
+    .tier-dropzone, .pool-zone {
+      flex-grow: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      min-height: 75px;
+    }
+
+    .pool-zone {
+      background: rgba(10, 14, 23, 0.5);
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      min-height: 90px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: var(--text-main);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .custom-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+    .custom-table th { color: var(--text-sub); font-size: 0.9rem; padding: 12px 16px; text-align: left; }
+    .custom-table td {
+      background: rgba(15, 23, 42, 0.6);
+      border-top: 1px solid var(--panel-border);
+      border-bottom: 1px solid var(--panel-border);
+      padding: 14px 16px;
+    }
+
+    .custom-table tr td:first-child { border-left: 1px solid var(--panel-border); border-radius: 12px 0 0 12px; font-weight: 700; width: 140px; }
+    .custom-table tr td:last-child { border-right: 1px solid var(--panel-border); border-radius: 0 12px 12px 0; }
+
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      background: rgba(10, 14, 23, 0.8);
+      border: 1px solid var(--panel-border);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
+    .badge-low { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .badge-mid { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+    .badge-high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .edpi-val { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; color: #a5b4fc; }
+
+    .status-bar { text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--text-sub); }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header class="header">
+      <h1 class="main-title">내남팸의 티어리스트!</h1>
+      
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab(this, 'skill')"><i class="fa-solid fa-trophy"></i> 실력</button>
+        <button class="tab-btn" onclick="switchTab(this, 'aim')"><i class="fa-solid fa-crosshair"></i> 에임</button>
+        <button class="tab-btn" onclick="switchTab(this, 'sense')"><i class="fa-solid fa-brain"></i> 센스</button>
+        <button class="tab-btn" onclick="switchTab(this, 'issues')"><i class="fa-solid fa-triangle-exclamation"></i> 문제점</button>
+        <button class="tab-btn" onclick="switchTab(this, 'sens')"><i class="fa-solid fa-sliders"></i> 감도</button>
+      </nav>
+    </header>
+
+    <section id="tab-skill" class="tab-content active">
+      <div class="panel-box">
+        <h2 class="panel-title"><i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> 실력 티어리스트</h2>
+        <div class="tier-board" id="board-skill"></div>
+        <div class="panel-title" style="font-size: 1.1rem; margin-top: 15px;">대기목록</div>
+        <div class="pool-zone" id="skill-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      </div>
+    </section>
+
+    <section id="tab-aim" class="tab-content">
+      <div class="panel-box">
+        <h2 class="panel-title"><i class="fa-solid fa-crosshair" style="color: #ef4444;"></i> 에임 티어리스트</h2>
+        <div class="tier-board" id="board-aim"></div>
+        <div class="panel-title" style="font-size: 1.1rem; margin-top: 15px;">대기목록</div>
+        <div class="pool-zone" id="aim-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      </div>
+    </section>
+
+    <section id="tab-sense" class="tab-content">
+      <div class="panel-box">
+        <h2 class="panel-title"><i class="fa-solid fa-brain" style="color: #a855f7;"></i> 센스 티어리스트</h2>
+        <div class="tier-board" id="board-sense"></div>
+        <div class="panel-title" style="font-size: 1.1rem; margin-top: 15px;">대기목록</div>
+        <div class="pool-zone" id="sense-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      </div>
+    </section>
+
+    <section id="tab-issues" class="tab-content">
+      <div class="panel-box">
+        <h2 class="panel-title"><i class="fa-solid fa-triangle-exclamation" style="color: #eab308;"></i> 멤버별 문제점 분석</h2>
+        <table class="custom-table">
+          <thead>
+            <tr><th>이름</th><th>문제점 메모 (글자 수 제한 없음)</th></tr>
+          </thead>
+          <tbody id="issue-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-sens" class="tab-content">
+      <div class="panel-box">
+        <h2 class="panel-title"><i class="fa-solid fa-sliders" style="color: #3b82f6;"></i> 인게임 감도 & DPI 계산기</h2>
+        <table class="custom-table">
+          <thead>
+            <tr><th>이름</th><th>인게임 감도</th><th>DPI</th><th>EDPI</th><th>감도 분류</th></tr>
+          </thead>
+          <tbody id="sens-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="status-bar" id="status-text">사이트 정상 로드 완료</div>
+  </div>
+
+  <script>
+    const members = ['기강현', '이지호', '정수안', '이원석', '박준혁', '최규진'];
+    const categories = [{ id: 'skill' }, { id: 'aim' }, { id: 'sense' }];
+    const tiers = ['S', 'A', 'B', 'C', 'D', 'E'];
+
+    // DOM 생성
+    categories.forEach(cat => {
+      const boardEl = document.getElementById(`board-${cat.id}`);
+      tiers.forEach(t => {
+        boardEl.innerHTML += `
+          <div class="tier-row">
+            <div class="tier-label tier-${t}">${t}</div>
+            <div class="tier-dropzone" id="${cat.id}-${t}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          </div>
+        `;
+      });
+
+      const poolEl = document.getElementById(`${cat.id}-pool`);
+      members.forEach(m => {
+        poolEl.innerHTML += `
+          <div class="card" id="${cat.id}-card-${m}" draggable="true" ondragstart="drag(event)">
+            <i class="fa-solid fa-grip-vertical" style="opacity:0.4;"></i> ${m}
+          </div>
+        `;
+      });
+    });
+
+    const issueTbody = document.getElementById('issue-tbody');
+    const sensTbody = document.getElementById('sens-tbody');
+
+    members.forEach(m => {
+      issueTbody.innerHTML += `
+        <tr>
+          <td>${m}</td>
+          <td><textarea id="issue-${m}" rows="1" placeholder="${m} 멤버의 문제점을 적어주세요..." onchange="saveData()"></textarea></td>
+        </tr>
+      `;
+
+      sensTbody.innerHTML += `
+        <tr>
+          <td>${m}</td>
+          <td><input type="number" step="any" id="ingame-${m}" placeholder="예: 1.2" oninput="calcSens('${m}')"></td>
+          <td><input type="number" id="dpi-${m}" placeholder="예: 800" oninput="calcSens('${m}')"></td>
+          <td><span class="edpi-val" id="edpi-${m}">0</span></td>
+          <td id="sens-type-${m}">-</td>
+        </tr>
+      `;
+    });
+
+    // 탭 전환
+    function switchTab(btnElement, tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      btnElement.classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    // 드래그 앤 드롭
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+    function drop(ev) {
+      ev.preventDefault();
+      const targetZone = ev.target.closest('.tier-dropzone') || ev.target.closest('.pool-zone');
+      if (targetZone) {
+        const cardId = ev.dataTransfer.getData("text");
+        const cardEl = document.getElementById(cardId);
+        if (cardEl) {
+          targetZone.appendChild(cardEl);
+          saveData();
+        }
+      }
+    }
+
+    // EDPI 계산
+    function calcSens(name) {
+      const ingame = parseFloat(document.getElementById(`ingame-${name}`).value) || 0;
+      const dpi = parseFloat(document.getElementById(`dpi-${name}`).value) || 0;
+      const edpi = Math.round(ingame * dpi * 100) / 100;
+
+      document.getElementById(`edpi-${name}`).innerText = edpi.toLocaleString();
+      const typeEl = document.getElementById(`sens-type-${name}`);
+
+      if (edpi > 0) {
+        if (edpi <= 4000) typeEl.innerHTML = '<span class="badge badge-low">저감도</span>';
+        else if (edpi >= 7000) typeEl.innerHTML = '<span class="badge badge-high">고감도</span>';
+        else typeEl.innerHTML = '<span class="badge badge-mid">중감도</span>';
+      } else {
+        typeEl.innerText = '-';
+      }
+      saveData();
+    }
+
+    // Firebase 안전 연결
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com"
+    };
+
+    let db = null;
+    try {
+      if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        document.getElementById('status-text').innerText = "Firebase 실시간 연동 활성화됨";
+      }
+    } catch (e) {
+      console.warn("Firebase 연동 대기 중:", e);
+    }
+
+    function saveData() {
+      if (!db) return;
+      const state = { tiers: {}, issues: {}, sens: {} };
+
+      categories.forEach(cat => {
+        state.tiers[cat.id] = {};
+        tiers.concat(['pool']).forEach(zone => {
+          const zoneId = (zone === 'pool') ? `${cat.id}-pool` : `${cat.id}-${zone}`;
+          const zoneEl = document.getElementById(zoneId);
+          if (zoneEl) state.tiers[cat.id][zone] = Array.from(zoneEl.children).map(c => c.id);
+        });
+      });
+
+      members.forEach(m => {
+        state.issues[m] = document.getElementById(`issue-${m}`).value;
+        state.sens[m] = {
+          ingame: document.getElementById(`ingame-${m}`).value,
+          dpi: document.getElementById(`dpi-${m}`).value
+        };
+      });
+
+      db.ref('naenamfam_tier_data').set(state);
+    }
+
+    if (db) {
+      db.ref('naenamfam_tier_data').on('value', snapshot => {
+        const data = snapshot.val();
+        if (!data) return;
+
+        if (data.tiers) {
+          Object.keys(data.tiers).forEach(catId => {
+            Object.keys(data.tiers[catId]).forEach(zone => {
+              const zoneId = (zone === 'pool') ? `${catId}-pool` : `${catId}-${zone}`;
+              const zoneEl = document.getElementById(zoneId);
+              if (zoneEl && data.tiers[catId][zone]) {
+                data.tiers[catId][zone].forEach(cardId => {
+                  const card = document.getElementById(cardId);
+                  if (card) zoneEl.appendChild(card);
+                });
+              }
+            });
+          });
+        }
+
+        if (data.issues) {
+          Object.keys(data.issues).forEach(m => {
+            const el = document.getElementById(`issue-${m}`);
+            if (el && document.activeElement !== el) el.value = data.issues[m] || '';
+          });
+        }
+
+        if (data.sens) {
+          Object.keys(data.sens).forEach(m => {
+            const ingameEl = document.getElementById(`ingame-${m}`);
+            const dpiEl = document.getElementById(`dpi-${m}`);
+            if (ingameEl && document.activeElement !== ingameEl) ingameEl.value = data.sens[m].ingame || '';
+            if (dpiEl && document.activeElement !== dpiEl) dpiEl.value = data.sens[m].dpi || '';
+            calcSens(m);
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
