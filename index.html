@@ -268,7 +268,7 @@
       cursor: pointer;
     }
 
-    .status-bar { text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--text-sub); }
+    .status-bar { text-align: center; margin-top: 20px; font-size: 0.8rem; color: #22c55e; }
   </style>
 </head>
 <body>
@@ -337,7 +337,7 @@
       </div>
     </section>
 
-    <div class="status-bar" id="status-text">자동 저장 활성화됨</div>
+    <div class="status-bar" id="status-text">● 모든 유저 실시간 데이터 연동 활성화됨</div>
   </div>
 
   <!-- 이동 팝업 모달 (모바일/클릭용) -->
@@ -362,6 +362,21 @@
     const categories = [{ id: 'skill' }, { id: 'aim' }, { id: 'sense' }];
     const tiers = ['S', 'A', 'B', 'C', 'D', 'E'];
     let activeCardId = null;
+
+    // Firebase 발급 키 설정
+    const firebaseConfig = {
+      apiKey: "AIzaSyDOzYHRXJP-n_OBlbKJcXK2Z2fEA_nhFbI",
+      authDomain: "tirelist-4be0f.firebaseapp.com",
+      databaseURL: "https://tirelist-4be0f-default-rtdb.firebaseio.com",
+      projectId: "tirelist-4be0f",
+      storageBucket: "tirelist-4be0f.firebasestorage.app",
+      messagingSenderId: "656391585746",
+      appId: "1:656391585746:web:7d33f18842fbce8265920b",
+      measurementId: "G-J6JF8WCEKY"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     // DOM 생성
     categories.forEach(cat => {
@@ -478,7 +493,7 @@
       saveData();
     }
 
-    // 데이터 통합 저장 (LocalStorage + Firebase)
+    // Firebase 실시간 데이터 저장
     function saveData() {
       const state = { tiers: {}, issues: {}, sens: {} };
 
@@ -499,15 +514,12 @@
         };
       });
 
-      // 1. 브라우저 저장소 (새로고침 유지)
-      localStorage.setItem('naenamfam_local_data', JSON.stringify(state));
-
-      // 2. 파이어베이스 저장소 (실시간 공유)
-      if (db) db.ref('naenamfam_tier_data').set(state);
+      db.ref('naenamfam_tier_data').set(state);
     }
 
-    // 저장된 데이터 불러오기
-    function loadSavedData(data) {
+    // Firebase 실시간 동기화 (모든 접속자 공유)
+    db.ref('naenamfam_tier_data').on('value', snapshot => {
+      const data = snapshot.val();
       if (!data) return;
 
       if (data.tiers) {
@@ -541,34 +553,7 @@
           calcSens(m);
         });
       }
-    }
-
-    // 페이지 로드 시 로컬 저장소 우선 복구
-    const localData = localStorage.getItem('naenamfam_local_data');
-    if (localData) {
-      loadSavedData(JSON.parse(localData));
-    }
-
-    // Firebase 설정
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com"
-    };
-
-    let db = null;
-    try {
-      if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        document.getElementById('status-text').innerText = "실시간 서버 연동 활성화됨";
-
-        db.ref('naenamfam_tier_data').on('value', snapshot => {
-          loadSavedData(snapshot.val());
-        });
-      }
-    } catch (e) {
-      console.warn("Firebase 대기 중:", e);
-    }
+    });
   </script>
 </body>
 </html>
