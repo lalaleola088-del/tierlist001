@@ -198,7 +198,7 @@
     .custom-table tr td:first-child { border-left: 1px solid var(--panel-border); border-radius: 10px 0 0 10px; font-weight: 700; width: 110px; }
     .custom-table tr td:last-child { border-right: 1px solid var(--panel-border); border-radius: 0 10px 10px 0; }
 
-    input[type="text"], input[type="number"], textarea {
+    input[type="text"], input[type="number"] {
       width: 100%;
       background: rgba(10, 14, 23, 0.8);
       border: 1px solid var(--panel-border);
@@ -208,13 +208,34 @@
       outline: none;
     }
 
+    /* 문제점 열기 버튼 */
+    .open-issue-btn {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .open-issue-btn:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+    }
+
     .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; }
     .badge-low { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
     .badge-mid { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
     .badge-high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
     .edpi-val { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: #a5b4fc; }
 
-    /* 모바일/클릭 이동 팝업 모달 */
+    /* 모달 공통 스타일 */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -268,6 +289,38 @@
       cursor: pointer;
     }
 
+    /* 대형 문제점 메모 모달 전용 스타일 */
+    .issue-modal-box {
+      background: #1e293b;
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      padding: 25px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .issue-textarea {
+      width: 100%;
+      height: 280px;
+      background: rgba(10, 14, 23, 0.85);
+      border: 1px solid var(--panel-border);
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      line-height: 1.6;
+      outline: none;
+      resize: vertical;
+      font-family: inherit;
+      margin-bottom: 15px;
+    }
+
+    .issue-textarea:focus {
+      border-color: var(--accent-glow);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+
     .status-bar { text-align: center; margin-top: 20px; font-size: 0.8rem; color: #22c55e; }
   </style>
 </head>
@@ -318,7 +371,7 @@
         <h2 class="panel-title"><i class="fa-solid fa-triangle-exclamation" style="color: #eab308;"></i> 멤버별 문제점 분석</h2>
         <table class="custom-table">
           <thead>
-            <tr><th>이름</th><th>문제점 메모 (글자 수 제한 없음)</th></tr>
+            <tr><th>이름</th><th>문제점 메모 관리</th></tr>
           </thead>
           <tbody id="issue-tbody"></tbody>
         </table>
@@ -357,11 +410,22 @@
     </div>
   </div>
 
+  <!-- 대형 문제점 작성/보기 모달 -->
+  <div class="modal-overlay" id="issue-modal">
+    <div class="issue-modal-box">
+      <div class="modal-title" id="issue-modal-title" style="font-size: 1.3rem; text-align: left;">멤버 문제점 작성</div>
+      <textarea id="issue-modal-textarea" class="issue-textarea" placeholder="여기에 문제점 분석 내용을 자세히 적으세요..." oninput="updateCurrentIssue()"></textarea>
+      <button class="modal-close-btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white;" onclick="closeIssueModal()">닫기 (자동 저장됨)</button>
+    </div>
+  </div>
+
   <script>
     const members = ['기강현', '이지호', '정수안', '이원석', '박준혁', '최규진'];
     const categories = [{ id: 'skill' }, { id: 'aim' }, { id: 'sense' }];
     const tiers = ['S', 'A', 'B', 'C', 'D', 'E'];
     let activeCardId = null;
+    let currentIssueMember = null;
+    let issuesCache = {};
 
     // Firebase 발급 키 설정
     const firebaseConfig = {
@@ -407,7 +471,11 @@
       issueTbody.innerHTML += `
         <tr>
           <td>${m}</td>
-          <td><textarea id="issue-${m}" rows="1" placeholder="${m} 멤버의 문제점 작성..." onchange="saveData()"></textarea></td>
+          <td>
+            <button class="open-issue-btn" onclick="openIssueModal('${m}')">
+              <i class="fa-solid fa-pen-to-square"></i> ${m} 문제점 작성 / 보기
+            </button>
+          </td>
         </tr>
       `;
 
@@ -474,6 +542,26 @@
       closeModal();
     }
 
+    // 문제점 작성 모달 함수
+    function openIssueModal(memberName) {
+      currentIssueMember = memberName;
+      document.getElementById('issue-modal-title').innerText = `⚠️ ${memberName} 멤버 문제점 작성`;
+      document.getElementById('issue-modal-textarea').value = issuesCache[memberName] || '';
+      document.getElementById('issue-modal').classList.add('active');
+    }
+
+    function closeIssueModal() {
+      document.getElementById('issue-modal').classList.remove('active');
+      currentIssueMember = null;
+    }
+
+    function updateCurrentIssue() {
+      if (!currentIssueMember) return;
+      const textVal = document.getElementById('issue-modal-textarea').value;
+      issuesCache[currentIssueMember] = textVal;
+      saveData();
+    }
+
     // EDPI 계산
     function calcSens(name) {
       const ingame = parseFloat(document.getElementById(`ingame-${name}`).value) || 0;
@@ -495,7 +583,7 @@
 
     // Firebase 실시간 데이터 저장
     function saveData() {
-      const state = { tiers: {}, issues: {}, sens: {} };
+      const state = { tiers: {}, issues: issuesCache, sens: {} };
 
       categories.forEach(cat => {
         state.tiers[cat.id] = {};
@@ -507,7 +595,6 @@
       });
 
       members.forEach(m => {
-        state.issues[m] = document.getElementById(`issue-${m}`).value;
         state.sens[m] = {
           ingame: document.getElementById(`ingame-${m}`).value,
           dpi: document.getElementById(`dpi-${m}`).value
@@ -538,10 +625,10 @@
       }
 
       if (data.issues) {
-        Object.keys(data.issues).forEach(m => {
-          const el = document.getElementById(`issue-${m}`);
-          if (el && document.activeElement !== el) el.value = data.issues[m] || '';
-        });
+        issuesCache = data.issues;
+        if (currentIssueMember && document.activeElement !== document.getElementById('issue-modal-textarea')) {
+          document.getElementById('issue-modal-textarea').value = issuesCache[currentIssueMember] || '';
+        }
       }
 
       if (data.sens) {
