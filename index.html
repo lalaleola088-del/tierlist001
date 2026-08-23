@@ -36,7 +36,7 @@
       color: var(--text-main);
       font-family: 'Noto Sans KR', sans-serif;
       min-height: 100vh;
-      padding: 30px 15px;
+      padding: 20px 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -47,7 +47,7 @@
 
     .main-title {
       font-family: 'Outfit', 'Noto Sans KR', sans-serif;
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       font-weight: 900;
       background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #ec4899 100%);
       -webkit-background-clip: text;
@@ -60,10 +60,10 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 35px;
+      gap: 8px;
+      margin-bottom: 25px;
       background: var(--panel-bg);
-      padding: 10px;
+      padding: 8px;
       border-radius: 16px;
       border: 1px solid var(--panel-border);
       backdrop-filter: blur(12px);
@@ -73,15 +73,15 @@
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-sub);
-      padding: 12px 24px;
-      font-size: 1.05rem;
+      padding: 10px 18px;
+      font-size: 0.95rem;
       font-weight: 700;
       border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .tab-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
@@ -89,46 +89,38 @@
     .tab-btn.active {
       background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: #ffffff;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    .tab-content {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .tab-content.active {
-      display: block;
-      opacity: 1;
-    }
+    .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease; }
+    .tab-content.active { display: block; opacity: 1; }
 
     .panel-box {
       background: var(--panel-bg);
       border: 1px solid var(--panel-border);
       border-radius: 20px;
-      padding: 25px;
+      padding: 20px;
       backdrop-filter: blur(16px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .panel-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .tier-board {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 25px;
+      gap: 8px;
+      margin-bottom: 20px;
       border-radius: 14px;
       overflow: hidden;
       border: 1px solid var(--panel-border);
@@ -136,19 +128,19 @@
 
     .tier-row {
       display: flex;
-      min-height: 75px;
+      min-height: 70px;
       background: rgba(15, 23, 42, 0.6);
       border-bottom: 1px solid var(--panel-border);
     }
 
     .tier-label {
-      width: 80px;
+      width: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Outfit', sans-serif;
       font-weight: 900;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       flex-shrink: 0;
     }
 
@@ -164,62 +156,119 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 12px;
-      padding: 12px;
-      min-height: 75px;
+      gap: 10px;
+      padding: 10px;
+      min-height: 70px;
     }
 
     .pool-zone {
       background: rgba(10, 14, 23, 0.5);
       border: 2px dashed rgba(255, 255, 255, 0.15);
       border-radius: 14px;
-      min-height: 90px;
+      min-height: 80px;
     }
 
     .card {
       background: linear-gradient(135deg, #1e293b, #0f172a);
       color: var(--text-main);
-      padding: 12px 20px;
+      padding: 10px 16px;
       border-radius: 10px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      cursor: grab;
+      cursor: pointer;
       user-select: none;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
+    .card:active { transform: scale(0.95); }
+
     .custom-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-    .custom-table th { color: var(--text-sub); font-size: 0.9rem; padding: 12px 16px; text-align: left; }
+    .custom-table th { color: var(--text-sub); font-size: 0.85rem; padding: 10px; text-align: left; }
     .custom-table td {
       background: rgba(15, 23, 42, 0.6);
       border-top: 1px solid var(--panel-border);
       border-bottom: 1px solid var(--panel-border);
-      padding: 14px 16px;
+      padding: 12px;
     }
 
-    .custom-table tr td:first-child { border-left: 1px solid var(--panel-border); border-radius: 12px 0 0 12px; font-weight: 700; width: 140px; }
-    .custom-table tr td:last-child { border-right: 1px solid var(--panel-border); border-radius: 0 12px 12px 0; }
+    .custom-table tr td:first-child { border-left: 1px solid var(--panel-border); border-radius: 10px 0 0 10px; font-weight: 700; width: 110px; }
+    .custom-table tr td:last-child { border-right: 1px solid var(--panel-border); border-radius: 0 10px 10px 0; }
 
     input[type="text"], input[type="number"], textarea {
       width: 100%;
       background: rgba(10, 14, 23, 0.8);
       border: 1px solid var(--panel-border);
       color: #ffffff;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: 8px;
       outline: none;
     }
 
-    .badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
+    .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; }
     .badge-low { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
     .badge-mid { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
     .badge-high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .edpi-val { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; color: #a5b4fc; }
+    .edpi-val { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: #a5b4fc; }
 
-    .status-bar { text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--text-sub); }
+    /* 모바일/클릭 이동 팝업 모달 */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: #1e293b;
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 20px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .modal-title { font-weight: 700; margin-bottom: 15px; font-size: 1.1rem; color: #a5b4fc; }
+
+    .modal-btn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .modal-btn {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .modal-close-btn {
+      width: 100%;
+      padding: 10px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 8px;
+      color: #ccc;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .status-bar { text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--text-sub); }
   </style>
 </head>
 <body>
@@ -241,7 +290,7 @@
       <div class="panel-box">
         <h2 class="panel-title"><i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> 실력 티어리스트</h2>
         <div class="tier-board" id="board-skill"></div>
-        <div class="panel-title" style="font-size: 1.1rem; margin-top: 15px;">대기목록</div>
+        <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
         <div class="pool-zone" id="skill-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
       </div>
     </section>
@@ -250,7 +299,7 @@
       <div class="panel-box">
         <h2 class="panel-title"><i class="fa-solid fa-crosshair" style="color: #ef4444;"></i> 에임 티어리스트</h2>
         <div class="tier-board" id="board-aim"></div>
-        <div class="panel-title" style="font-size: 1.1rem; margin-top: 15px;">대기목록</div>
+        <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
         <div class="pool-zone" id="aim-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
       </div>
     </section>
@@ -259,7 +308,7 @@
       <div class="panel-box">
         <h2 class="panel-title"><i class="fa-solid fa-brain" style="color: #a855f7;"></i> 센스 티어리스트</h2>
         <div class="tier-board" id="board-sense"></div>
-        <div class="panel-title" style="font-size: 1.1rem; margin-top: 15px;">대기목록</div>
+        <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
         <div class="pool-zone" id="sense-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
       </div>
     </section>
@@ -288,13 +337,31 @@
       </div>
     </section>
 
-    <div class="status-bar" id="status-text">사이트 정상 로드 완료</div>
+    <div class="status-bar" id="status-text">자동 저장 활성화됨</div>
+  </div>
+
+  <!-- 이동 팝업 모달 (모바일/클릭용) -->
+  <div class="modal-overlay" id="move-modal">
+    <div class="modal-box">
+      <div class="modal-title" id="modal-card-name">멤버 이동</div>
+      <div class="modal-btn-grid">
+        <button class="modal-btn tier-S" onclick="moveCardTo('S')">S</button>
+        <button class="modal-btn tier-A" onclick="moveCardTo('A')">A</button>
+        <button class="modal-btn tier-B" onclick="moveCardTo('B')">B</button>
+        <button class="modal-btn tier-C" onclick="moveCardTo('C')">C</button>
+        <button class="modal-btn tier-D" onclick="moveCardTo('D')">D</button>
+        <button class="modal-btn tier-E" onclick="moveCardTo('E')">E</button>
+      </div>
+      <button class="modal-btn" style="background:#334155; width:100%; margin-bottom:8px;" onclick="moveCardTo('pool')">대기목록으로 이동</button>
+      <button class="modal-close-btn" onclick="closeModal()">취소</button>
+    </div>
   </div>
 
   <script>
     const members = ['기강현', '이지호', '정수안', '이원석', '박준혁', '최규진'];
     const categories = [{ id: 'skill' }, { id: 'aim' }, { id: 'sense' }];
     const tiers = ['S', 'A', 'B', 'C', 'D', 'E'];
+    let activeCardId = null;
 
     // DOM 생성
     categories.forEach(cat => {
@@ -311,8 +378,8 @@
       const poolEl = document.getElementById(`${cat.id}-pool`);
       members.forEach(m => {
         poolEl.innerHTML += `
-          <div class="card" id="${cat.id}-card-${m}" draggable="true" ondragstart="drag(event)">
-            <i class="fa-solid fa-grip-vertical" style="opacity:0.4;"></i> ${m}
+          <div class="card" id="${cat.id}-card-${m}" draggable="true" ondragstart="drag(event)" onclick="openModal('${cat.id}-card-${m}', '${m}')">
+            <i class="fa-solid fa-user"></i> ${m}
           </div>
         `;
       });
@@ -325,15 +392,15 @@
       issueTbody.innerHTML += `
         <tr>
           <td>${m}</td>
-          <td><textarea id="issue-${m}" rows="1" placeholder="${m} 멤버의 문제점을 적어주세요..." onchange="saveData()"></textarea></td>
+          <td><textarea id="issue-${m}" rows="1" placeholder="${m} 멤버의 문제점 작성..." onchange="saveData()"></textarea></td>
         </tr>
       `;
 
       sensTbody.innerHTML += `
         <tr>
           <td>${m}</td>
-          <td><input type="number" step="any" id="ingame-${m}" placeholder="예: 1.2" oninput="calcSens('${m}')"></td>
-          <td><input type="number" id="dpi-${m}" placeholder="예: 800" oninput="calcSens('${m}')"></td>
+          <td><input type="number" step="any" id="ingame-${m}" placeholder="1.2" oninput="calcSens('${m}')"></td>
+          <td><input type="number" id="dpi-${m}" placeholder="800" oninput="calcSens('${m}')"></td>
           <td><span class="edpi-val" id="edpi-${m}">0</span></td>
           <td id="sens-type-${m}">-</td>
         </tr>
@@ -365,6 +432,33 @@
       }
     }
 
+    // 모바일 / 클릭 이동 모달
+    function openModal(cardId, name) {
+      activeCardId = cardId;
+      document.getElementById('modal-card-name').innerText = `${name} 위치 이동`;
+      document.getElementById('move-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('move-modal').classList.remove('active');
+      activeCardId = null;
+    }
+
+    function moveCardTo(targetTier) {
+      if (!activeCardId) return;
+      const cardEl = document.getElementById(activeCardId);
+      const categoryId = activeCardId.split('-')[0];
+      
+      const targetZoneId = (targetTier === 'pool') ? `${categoryId}-pool` : `${categoryId}-${targetTier}`;
+      const targetZone = document.getElementById(targetZoneId);
+
+      if (cardEl && targetZone) {
+        targetZone.appendChild(cardEl);
+        saveData();
+      }
+      closeModal();
+    }
+
     // EDPI 계산
     function calcSens(name) {
       const ingame = parseFloat(document.getElementById(`ingame-${name}`).value) || 0;
@@ -384,25 +478,8 @@
       saveData();
     }
 
-    // Firebase 안전 연결
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com"
-    };
-
-    let db = null;
-    try {
-      if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        document.getElementById('status-text').innerText = "Firebase 실시간 연동 활성화됨";
-      }
-    } catch (e) {
-      console.warn("Firebase 연동 대기 중:", e);
-    }
-
+    // 데이터 통합 저장 (LocalStorage + Firebase)
     function saveData() {
-      if (!db) return;
       const state = { tiers: {}, issues: {}, sens: {} };
 
       categories.forEach(cat => {
@@ -422,46 +499,75 @@
         };
       });
 
-      db.ref('naenamfam_tier_data').set(state);
+      // 1. 브라우저 저장소 (새로고침 유지)
+      localStorage.setItem('naenamfam_local_data', JSON.stringify(state));
+
+      // 2. 파이어베이스 저장소 (실시간 공유)
+      if (db) db.ref('naenamfam_tier_data').set(state);
     }
 
-    if (db) {
-      db.ref('naenamfam_tier_data').on('value', snapshot => {
-        const data = snapshot.val();
-        if (!data) return;
+    // 저장된 데이터 불러오기
+    function loadSavedData(data) {
+      if (!data) return;
 
-        if (data.tiers) {
-          Object.keys(data.tiers).forEach(catId => {
-            Object.keys(data.tiers[catId]).forEach(zone => {
-              const zoneId = (zone === 'pool') ? `${catId}-pool` : `${catId}-${zone}`;
-              const zoneEl = document.getElementById(zoneId);
-              if (zoneEl && data.tiers[catId][zone]) {
-                data.tiers[catId][zone].forEach(cardId => {
-                  const card = document.getElementById(cardId);
-                  if (card) zoneEl.appendChild(card);
-                });
-              }
-            });
+      if (data.tiers) {
+        Object.keys(data.tiers).forEach(catId => {
+          Object.keys(data.tiers[catId]).forEach(zone => {
+            const zoneId = (zone === 'pool') ? `${catId}-pool` : `${catId}-${zone}`;
+            const zoneEl = document.getElementById(zoneId);
+            if (zoneEl && data.tiers[catId][zone]) {
+              data.tiers[catId][zone].forEach(cardId => {
+                const card = document.getElementById(cardId);
+                if (card) zoneEl.appendChild(card);
+              });
+            }
           });
-        }
+        });
+      }
 
-        if (data.issues) {
-          Object.keys(data.issues).forEach(m => {
-            const el = document.getElementById(`issue-${m}`);
-            if (el && document.activeElement !== el) el.value = data.issues[m] || '';
-          });
-        }
+      if (data.issues) {
+        Object.keys(data.issues).forEach(m => {
+          const el = document.getElementById(`issue-${m}`);
+          if (el && document.activeElement !== el) el.value = data.issues[m] || '';
+        });
+      }
 
-        if (data.sens) {
-          Object.keys(data.sens).forEach(m => {
-            const ingameEl = document.getElementById(`ingame-${m}`);
-            const dpiEl = document.getElementById(`dpi-${m}`);
-            if (ingameEl && document.activeElement !== ingameEl) ingameEl.value = data.sens[m].ingame || '';
-            if (dpiEl && document.activeElement !== dpiEl) dpiEl.value = data.sens[m].dpi || '';
-            calcSens(m);
-          });
-        }
-      });
+      if (data.sens) {
+        Object.keys(data.sens).forEach(m => {
+          const ingameEl = document.getElementById(`ingame-${m}`);
+          const dpiEl = document.getElementById(`dpi-${m}`);
+          if (ingameEl && document.activeElement !== ingameEl) ingameEl.value = data.sens[m].ingame || '';
+          if (dpiEl && document.activeElement !== dpiEl) dpiEl.value = data.sens[m].dpi || '';
+          calcSens(m);
+        });
+      }
+    }
+
+    // 페이지 로드 시 로컬 저장소 우선 복구
+    const localData = localStorage.getItem('naenamfam_local_data');
+    if (localData) {
+      loadSavedData(JSON.parse(localData));
+    }
+
+    // Firebase 설정
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com"
+    };
+
+    let db = null;
+    try {
+      if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        document.getElementById('status-text').innerText = "실시간 서버 연동 활성화됨";
+
+        db.ref('naenamfam_tier_data').on('value', snapshot => {
+          loadSavedData(snapshot.val());
+        });
+      }
+    } catch (e) {
+      console.warn("Firebase 대기 중:", e);
     }
   </script>
 </body>
