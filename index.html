@@ -145,60 +145,54 @@
 
         .tier-row {
             display: flex;
-            min-height: 70px;
+            min-height: 75px;
             background: rgba(15, 23, 42, 0.6);
             border-bottom: 1px solid var(--panel-border);
         }
 
         .tier-label {
-            width: 70px;
+            width: 100px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 900;
-            font-size: 1.6rem;
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
             flex-shrink: 0;
+            padding: 5px;
+            gap: 2px;
+            text-align: center;
         }
 
-        /* 티어 스타일 */
-        .tier-S { background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; }
-        .tier-Ap { background: linear-gradient(135deg, #ff7f50, #ff4757); color: #fff; } /* A+ */
-        .tier-A { background: linear-gradient(135deg, #ffa502, #ff7f50); color: #fff; }
-        .tier-Bp { background: linear-gradient(135deg, #eccc68, #ffa502); color: #1e293b; } /* B+ */
-        .tier-B { background: linear-gradient(135deg, #eccc68, #ffa502); color: #1e293b; }
-        .tier-Bm { background: linear-gradient(135deg, #ffa502, #eccc68); color: #1e293b; } /* B- */
-        .tier-C { background: linear-gradient(135deg, #2ed573, #7bed9f); color: #1e293b; }
-        .tier-D { background: linear-gradient(135deg, #1e90ff, #70a1ff); color: #fff; }
-        .tier-E { background: linear-gradient(135deg, #a55eea, #d6a2e8); color: #fff; }
-
-        /* 오버워치 티어 스타일 */
-        .tier-top500 { background-image: url('image_9.png'); background-color: #2e3b4e; color: #fff; text-indent: -9999px; } /* 텍스트 숨김 */
-        .tier-champion { background-image: url('image_8.png'); background-color: #4a5d7d; color: #fff; text-indent: -9999px; }
-        .tier-grandmaster { background-image: url('image_7.png'); background-color: #7e99ca; color: #fff; text-indent: -9999px; }
-        .tier-master { background-image: url('image_6.png'); background-color: #a3c4f3; color: #1e293b; text-indent: -9999px; }
-        .tier-diamond { background-image: url('image_5.png'); background-color: #c9e3ff; color: #1e293b; text-indent: -9999px; }
-        .tier-emerald { background-image: url('image_4.png'); background-color: #6ed398; color: #1e293b; text-indent: -9999px; }
-        .tier-platinum { background-image: url('image_3.png'); background-color: #92e6b9; color: #1e293b; text-indent: -9999px; }
-        .tier-gold { background-image: url('image_2.png'); background-color: #f7d774; color: #1e293b; text-indent: -9999px; }
-        .tier-silver { background-image: url('image_1.png'); background-color: #d8e6eb; color: #1e293b; text-indent: -9999px; }
-        .tier-bronze { background-image: url('image_0.png'); background-color: #ccb9a3; color: #1e293b; text-indent: -9999px; }
-
-        .tier-label.tier-top500,
-        .tier-label.tier-champion,
-        .tier-label.tier-grandmaster,
-        .tier-label.tier-master,
-        .tier-label.tier-diamond,
-        .tier-label.tier-emerald,
-        .tier-label.tier-platinum,
-        .tier-label.tier-gold,
-        .tier-label.tier-silver,
-        .tier-label.tier-bronze {
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            width: 80px; /* 오버워치 이미지를 위해 너비 조정 */
+        .tier-icon-img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
         }
+
+        /* 알파벳 티어 스타일 */
+        .tier-S { background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; font-size: 1.5rem; }
+        .tier-Ap { background: linear-gradient(135deg, #ff6b81, #ff7f50); color: #fff; font-size: 1.4rem; }
+        .tier-A { background: linear-gradient(135deg, #ff7f50, #ffa502); color: #fff; font-size: 1.4rem; }
+        .tier-Bp { background: linear-gradient(135deg, #ffa502, #eccc68); color: #1e293b; font-size: 1.4rem; }
+        .tier-B { background: linear-gradient(135deg, #eccc68, #f1c40f); color: #1e293b; font-size: 1.4rem; }
+        .tier-Bm { background: linear-gradient(135deg, #f1c40f, #2ed573); color: #1e293b; font-size: 1.4rem; }
+        .tier-C { background: linear-gradient(135deg, #2ed573, #7bed9f); color: #1e293b; font-size: 1.4rem; }
+        .tier-D { background: linear-gradient(135deg, #1e90ff, #70a1ff); color: #fff; font-size: 1.4rem; }
+        .tier-E { background: linear-gradient(135deg, #a55eea, #d6a2e8); color: #fff; font-size: 1.4rem; }
+
+        /* 오버워치 티어 배경 스타일 */
+        .tier-top500 { background: rgba(220, 38, 38, 0.2); border-right: 3px solid #ef4444; color: #fca5a5; }
+        .tier-champion { background: rgba(147, 51, 234, 0.2); border-right: 3px solid #a855f7; color: #d8b4fe; }
+        .tier-grandmaster { background: rgba(236, 72, 153, 0.2); border-right: 3px solid #ec4899; color: #fbcfe8; }
+        .tier-master { background: rgba(168, 85, 247, 0.2); border-right: 3px solid #c084fc; color: #e9d5ff; }
+        .tier-diamond { background: rgba(59, 130, 246, 0.2); border-right: 3px solid #60a5fa; color: #bfdbfe; }
+        .tier-emerald { background: rgba(16, 185, 129, 0.2); border-right: 3px solid #34d399; color: #a7f3d0; }
+        .tier-platinum { background: rgba(20, 184, 166, 0.2); border-right: 3px solid #2dd4bf; color: #99f6e4; }
+        .tier-gold { background: rgba(234, 179, 8, 0.2); border-right: 3px solid #facc15; color: #fef08a; }
+        .tier-silver { background: rgba(148, 163, 184, 0.2); border-right: 3px solid #cbd5e1; color: #f1f5f9; }
+        .tier-bronze { background: rgba(180, 83, 9, 0.2); border-right: 3px solid #fb923c; color: #fed7aa; }
 
         .tier-dropzone, .pool-zone {
             flex-grow: 1;
@@ -279,7 +273,7 @@
             outline: none;
         }
 
-        /* 문제점 열기 버튼 */
+        /* 문제점 버튼 */
         .open-issue-btn {
             background: linear-gradient(135deg, #6366f1, #4f46e5);
             color: white;
@@ -319,7 +313,7 @@
             color: #a5b4fc;
         }
 
-        /* 모달 공통 스타일 */
+        /* 모달 스타일 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -344,7 +338,7 @@
             border-radius: 16px;
             padding: 20px;
             width: 90%;
-            max-width: 320px;
+            max-width: 360px;
             text-align: center;
         }
 
@@ -360,16 +354,21 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             margin-bottom: 12px;
+            max-height: 250px;
+            overflow-y: auto;
         }
 
         .modal-btn {
-            padding: 10px;
+            padding: 10px 5px;
             border: none;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.85rem;
             cursor: pointer;
             color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close-btn {
@@ -383,7 +382,6 @@
             cursor: pointer;
         }
 
-        /* 대형 문제점 메모 모달 전용 스타일 */
         .issue-modal-box {
             background: #1e293b;
             border: 1px solid var(--panel-border);
@@ -466,7 +464,7 @@
 
         <section id="tab-overwatch" class="tab-content">
             <div class="panel-box">
-                <h2 class="panel-title"><i class="fa-solid fa-ranking-star" style="color: #6366f1;"></i> 오버워치 티어리스트</h2>
+                <h2 class="panel-title"><i class="fa-solid fa-ranking-star" style="color: #6366f1;"></i> 예상 오버워치 티어</h2>
                 <div class="tier-board" id="board-overwatch"></div>
                 <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
                 <div class="pool-zone" id="overwatch-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
@@ -500,19 +498,17 @@
         <div class="status-bar" id="status-text">● 모든 유저 실시간 데이터 연동 활성화됨</div>
     </div>
 
-    <!-- 이동 팝업 모달 (모바일/클릭용) -->
+    <!-- 이동 팝업 모달 -->
     <div class="modal-overlay" id="move-modal">
         <div class="modal-box">
             <div class="modal-title" id="modal-card-name">멤버 이동</div>
-            <div class="modal-btn-grid">
-                <!-- JavaScript로 동적 생성 -->
-            </div>
+            <div class="modal-btn-grid"></div>
             <button class="modal-btn" style="background:#334155; width:100%; margin-bottom:8px;" onclick="moveCardTo('pool')">대기목록으로 이동</button>
             <button class="modal-close-btn" onclick="closeModal()">취소</button>
         </div>
     </div>
 
-    <!-- 대형 문제점 작성/보기 모달 -->
+    <!-- 대형 문제점 작성 모달 -->
     <div class="modal-overlay" id="issue-modal">
         <div class="issue-modal-box">
             <div class="modal-title" id="issue-modal-title" style="font-size: 1.3rem; text-align: left;">멤버 문제점 작성</div>
@@ -523,15 +519,29 @@
 
     <script>
         const members = ['기강현', '이지호', '정수안', '이원석', '박준혁', '최규진'];
-        const categories = [{ id: 'skill', name: '실력' }, { id: 'aim', name: '에임' }, { id: 'sense', name: '센스' }, { id: 'overwatch', name: '티어' }];
-        const tiers = ['S', 'Ap', 'A', 'Bp', 'B', 'Bm', 'C', 'D', 'E']; // Ap = A+, Bp = B+, Bm = B-
-        const overwatchTiers = ['top500', 'champion', 'grandmaster', 'master', 'diamond', 'emerald', 'platinum', 'gold', 'silver', 'bronze'];
+        const categories = [{ id: 'skill' }, { id: 'aim' }, { id: 'sense' }, { id: 'overwatch' }];
+        const tiers = ['S', 'Ap', 'A', 'Bp', 'B', 'Bm', 'C', 'D', 'E'];
+
+        // 오버워치 티어 데이터 및 이미지 링크 매핑
+        const overwatchInfo = {
+            top500: { name: '상위 500위', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/top500.png', local: 'top500.png' },
+            champion: { name: '챔피언', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/champion.png', local: 'champion.png' },
+            grandmaster: { name: '그랜드마스터', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/grandmaster.png', local: 'grandmaster.png' },
+            master: { name: '마스터', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/master.png', local: 'master.png' },
+            diamond: { name: '다이아몬드', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/diamond.png', local: 'diamond.png' },
+            emerald: { name: '에메랄드', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/emerald.png', local: 'emerald.png' },
+            platinum: { name: '플래티넘', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/platinum.png', local: 'platinum.png' },
+            gold: { name: '골드', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/gold.png', local: 'gold.png' },
+            silver: { name: '실버', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/silver.png', local: 'silver.png' },
+            bronze: { name: '브론즈', img: 'https://raw.githubusercontent.com/Overwatch-Item-Tracker/overwatch-assets/master/ranks/bronze.png', local: 'bronze.png' }
+        };
+        const overwatchTiers = Object.keys(overwatchInfo);
 
         let activeCardId = null;
         let currentIssueMember = null;
         let issuesCache = {};
 
-        // Firebase 발급 키 설정
+        // Firebase 설정
         const firebaseConfig = {
             apiKey: "AIzaSyDOzYHRXJP-n_OBlbKJcXK2Z2fEA_nhFbI",
             authDomain: "tirelist-4be0f.firebaseapp.com",
@@ -549,28 +559,24 @@
         categories.forEach(cat => {
             const boardEl = document.getElementById(`board-${cat.id}`);
             const poolEl = document.getElementById(`${cat.id}-pool`);
-            
-            let currentTiers;
-            if (cat.id === 'overwatch') {
-                currentTiers = overwatchTiers;
-            } else {
-                currentTiers = tiers;
-            }
-            
+            const isOw = cat.id === 'overwatch';
+            const currentTiers = isOw ? overwatchTiers : tiers;
+
             currentTiers.forEach(t => {
-                let tierLabel;
-                let tierClass;
-                if (cat.id === 'overwatch') {
-                    tierLabel = t.toUpperCase();
-                    tierClass = t;
+                let labelHtml = '';
+                if (isOw) {
+                    const info = overwatchInfo[t];
+                    labelHtml = `
+                        <img src="${info.img}" onerror="this.onerror=null; this.src='${info.local}'" alt="${info.name}" class="tier-icon-img">
+                        <span>${info.name}</span>
+                    `;
                 } else {
-                    tierLabel = t.replace('p', '+').replace('m', '-');
-                    tierClass = t;
+                    labelHtml = t.replace('p', '+').replace('m', '-');
                 }
-                
+
                 boardEl.innerHTML += `
                     <div class="tier-row">
-                        <div class="tier-label tier-${tierClass}">${tierLabel}</div>
+                        <div class="tier-label tier-${t}">${labelHtml}</div>
                         <div class="tier-dropzone" id="${cat.id}-${t}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     </div>
                 `;
@@ -640,36 +646,23 @@
             }
         }
 
-        // 모바일 / 클릭 이동 모달
+        // 클릭 이동 모달
         function openModal(cardId, name) {
             activeCardId = cardId;
             const categoryId = cardId.split('-')[0];
             document.getElementById('modal-card-name').innerText = `${name} 위치 이동`;
-            
-            // 모달 버튼 그리드 업데이트
+
             const modalBtnGrid = document.querySelector('#move-modal .modal-btn-grid');
             modalBtnGrid.innerHTML = '';
-            
-            let currentTiers;
-            if (categoryId === 'overwatch') {
-                currentTiers = overwatchTiers;
-            } else {
-                currentTiers = tiers;
-            }
-            
+
+            const isOw = categoryId === 'overwatch';
+            const currentTiers = isOw ? overwatchTiers : tiers;
+
             currentTiers.forEach(t => {
-                let tierLabel;
-                let tierClass;
-                if (categoryId === 'overwatch') {
-                    tierLabel = t.toUpperCase();
-                    tierClass = t;
-                } else {
-                    tierLabel = t.replace('p', '+').replace('m', '-');
-                    tierClass = t;
-                }
-                modalBtnGrid.innerHTML += `<button class="modal-btn tier-${tierClass}" onclick="moveCardTo('${t}')">${tierLabel}</button>`;
+                const labelText = isOw ? overwatchInfo[t].name : t.replace('p', '+').replace('m', '-');
+                modalBtnGrid.innerHTML += `<button class="modal-btn tier-${t}" onclick="moveCardTo('${t}')">${labelText}</button>`;
             });
-            
+
             document.getElementById('move-modal').classList.add('active');
         }
 
@@ -691,7 +684,7 @@
             closeModal();
         }
 
-        // 문제점 작성 모달 함수
+        // 문제점 모달
         function openIssueModal(memberName) {
             currentIssueMember = memberName;
             document.getElementById('issue-modal-title').innerText = `⚠️ ${memberName} 멤버 문제점 작성`;
@@ -727,19 +720,14 @@
             }
         }
 
-        // Firebase 실시간 데이터 저장
+        // 실시간 저장 (감도 연동 오류 완벽 수정)
         function saveData() {
             const state = { tiers: {}, issues: issuesCache, sens: {} };
+
             categories.forEach(cat => {
                 state.tiers[cat.id] = {};
-                
-                let currentTiers;
-                if (cat.id === 'overwatch') {
-                    currentTiers = overwatchTiers;
-                } else {
-                    currentTiers = tiers;
-                }
-                
+                const currentTiers = cat.id === 'overwatch' ? overwatchTiers : tiers;
+
                 currentTiers.concat(['pool']).forEach(zone => {
                     const zoneId = (zone === 'pool') ? `${cat.id}-pool` : `${cat.id}-${zone}`;
                     const zoneEl = document.getElementById(zoneId);
@@ -747,19 +735,17 @@
                 });
             });
 
-            // 감도 저장
             members.forEach(m => {
-                state.sens[m] = {
-                    ingame: document.getElementById(`ingame-${m}`).value,
-                    dpi: document.getElementById(`dpi-${m}`).value
-                };
-                calcSens(m); 
+                const ingameVal = document.getElementById(`ingame-${m}`).value;
+                const dpiVal = document.getElementById(`dpi-${m}`).value;
+                state.sens[m] = { ingame: ingameVal, dpi: dpiVal };
+                calcSens(m);
             });
 
             db.ref('naenamfam_tier_data').set(state);
         }
 
-        // Firebase 실시간 동기화 (모든 접속자 공유)
+        // 실시간 동기화 수신
         db.ref('naenamfam_tier_data').on('value', snapshot => {
             const data = snapshot.val();
             if (!data) return;
