@@ -133,18 +133,6 @@
             gap: 8px;
         }
 
-        .grid-split {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-        }
-
-        @media (min-width: 850px) {
-            .grid-split {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
         .tier-board {
             display: flex;
             flex-direction: column;
@@ -178,14 +166,17 @@
         }
 
         .tier-icon-badge {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            box-shadow: inset 0 0 8px rgba(255,255,255,0.2);
+        }
+
+        .tier-icon-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         /* 알파벳 티어 스타일 */
@@ -201,34 +192,15 @@
 
         /* 오버워치 티어 디자인 배지 */
         .tier-top500 { background: rgba(239, 68, 68, 0.15); border-right: 3px solid #ef4444; color: #fca5a5; }
-        .tier-top500 .tier-icon-badge { background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; }
-
         .tier-champion { background: rgba(168, 85, 247, 0.15); border-right: 3px solid #a855f7; color: #d8b4fe; }
-        .tier-champion .tier-icon-badge { background: linear-gradient(135deg, #a855f7, #6b21a8); color: #fff; }
-
         .tier-grandmaster { background: rgba(236, 72, 153, 0.15); border-right: 3px solid #ec4899; color: #fbcfe8; }
-        .tier-grandmaster .tier-icon-badge { background: linear-gradient(135deg, #ec4899, #9d174d); color: #fff; }
-
         .tier-master { background: rgba(192, 132, 252, 0.15); border-right: 3px solid #c084fc; color: #e9d5ff; }
-        .tier-master .tier-icon-badge { background: linear-gradient(135deg, #c084fc, #7e22ce); color: #fff; }
-
         .tier-diamond { background: rgba(96, 165, 250, 0.15); border-right: 3px solid #60a5fa; color: #bfdbfe; }
-        .tier-diamond .tier-icon-badge { background: linear-gradient(135deg, #60a5fa, #1e40af); color: #fff; }
-
         .tier-emerald { background: rgba(52, 211, 153, 0.15); border-right: 3px solid #34d399; color: #a7f3d0; }
-        .tier-emerald .tier-icon-badge { background: linear-gradient(135deg, #34d399, #065f46); color: #fff; }
-
         .tier-platinum { background: rgba(45, 212, 191, 0.15); border-right: 3px solid #2dd4bf; color: #99f6e4; }
-        .tier-platinum .tier-icon-badge { background: linear-gradient(135deg, #2dd4bf, #115e59); color: #fff; }
-
         .tier-gold { background: rgba(250, 204, 21, 0.15); border-right: 3px solid #facc15; color: #fef08a; }
-        .tier-gold .tier-icon-badge { background: linear-gradient(135deg, #facc15, #854d0e); color: #fff; }
-
         .tier-silver { background: rgba(203, 213, 225, 0.15); border-right: 3px solid #cbd5e1; color: #f1f5f9; }
-        .tier-silver .tier-icon-badge { background: linear-gradient(135deg, #cbd5e1, #475569); color: #fff; }
-
         .tier-bronze { background: rgba(251, 146, 60, 0.15); border-right: 3px solid #fb923c; color: #fed7aa; }
-        .tier-bronze .tier-icon-badge { background: linear-gradient(135deg, #fb923c, #7c2d12); color: #fff; }
 
         .tier-dropzone, .pool-zone {
             flex-grow: 1;
@@ -460,7 +432,8 @@
                 <button class="tab-btn active" onclick="switchTab(this, 'skill')"><i class="fa-solid fa-trophy"></i> 실력</button>
                 <button class="tab-btn" onclick="switchTab(this, 'aim')"><i class="fa-solid fa-crosshair"></i> 에임</button>
                 <button class="tab-btn" onclick="switchTab(this, 'sense')"><i class="fa-solid fa-brain"></i> 센스</button>
-                <button class="tab-btn" onclick="switchTab(this, 'overwatch')"><i class="fa-solid fa-ranking-star"></i> 오버워치 티어</button>
+                <button class="tab-btn" onclick="switchTab(this, 'owcurr')"><i class="fa-solid fa-user-check"></i> 현재 티어</button>
+                <button class="tab-btn" onclick="switchTab(this, 'owexp')"><i class="fa-solid fa-wand-magic-sparkles"></i> 잠재적 티어</button>
                 <button class="tab-btn" onclick="switchTab(this, 'issues')"><i class="fa-solid fa-triangle-exclamation"></i> 문제점</button>
                 <button class="tab-btn" onclick="switchTab(this, 'sens')"><i class="fa-solid fa-sliders"></i> 감도</button>
             </nav>
@@ -493,24 +466,23 @@
             </div>
         </section>
 
-        <!-- 현재 티어 & 예상 티어 2개 칸 분리 -->
-        <section id="tab-overwatch" class="tab-content">
-            <div class="grid-split">
-                <!-- 1. 현재 티어 -->
-                <div class="panel-box">
-                    <h2 class="panel-title"><i class="fa-solid fa-user-check" style="color: #38bdf8;"></i> 현재 티어</h2>
-                    <div class="tier-board" id="board-owcurr"></div>
-                    <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
-                    <div class="pool-zone" id="owcurr-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
+        <!-- 현재 티어 탭 -->
+        <section id="tab-owcurr" class="tab-content">
+            <div class="panel-box">
+                <h2 class="panel-title"><i class="fa-solid fa-user-check" style="color: #38bdf8;"></i> 현재 티어</h2>
+                <div class="tier-board" id="board-owcurr"></div>
+                <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
+                <div class="pool-zone" id="owcurr-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+        </section>
 
-                <!-- 2. 예상 티어 -->
-                <div class="panel-box">
-                    <h2 class="panel-title"><i class="fa-solid fa-wand-magic-sparkles" style="color: #c084fc;"></i> 예상 티어</h2>
-                    <div class="tier-board" id="board-owexp"></div>
-                    <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
-                    <div class="pool-zone" id="owexp-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
+        <!-- 잠재적 티어 탭 -->
+        <section id="tab-owexp" class="tab-content">
+            <div class="panel-box">
+                <h2 class="panel-title"><i class="fa-solid fa-wand-magic-sparkles" style="color: #c084fc;"></i> 잠재적 티어</h2>
+                <div class="tier-board" id="board-owexp"></div>
+                <div class="panel-title" style="font-size: 1rem; margin-top: 15px;">대기목록</div>
+                <div class="pool-zone" id="owexp-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
             </div>
         </section>
 
@@ -565,18 +537,18 @@
         const categories = [{ id: 'skill' }, { id: 'aim' }, { id: 'sense' }, { id: 'owcurr' }, { id: 'owexp' }];
         const tiers = ['S', 'Ap', 'A', 'Bp', 'B', 'Bm', 'C', 'D', 'E'];
 
-        // 오버워치 티어 및 선명한 아이콘 정보
+        // jpg 확장자로 적용된 경로
         const overwatchInfo = {
-            top500: { name: '상위 500위', icon: 'fa-crown' },
-            champion: { name: '챔피언', icon: 'fa-shield-halved' },
-            grandmaster: { name: '그랜드마스터', icon: 'fa-gem' },
-            master: { name: '마스터', icon: 'fa-star' },
-            diamond: { name: '다이아몬드', icon: 'fa-diamond' },
-            emerald: { name: '에메랄드', icon: 'fa-leaf' },
-            platinum: { name: '플래티넘', icon: 'fa-award' },
-            gold: { name: '골드', icon: 'fa-medal' },
-            silver: { name: '실버', icon: 'fa-shield' },
-            bronze: { name: '브론즈', icon: 'fa-circle-notch' }
+            top500: { name: '상위 500위', img: './top500.jpg' },
+            champion: { name: '챔피언', img: './champion.jpg' },
+            grandmaster: { name: '그랜드마스터', img: './grand master.jpg' },
+            master: { name: '마스터', img: './master.jpg' },
+            diamond: { name: '다이아몬드', img: './diamond.jpg' },
+            emerald: { name: '에메랄드', img: './emerald.jpg' },
+            platinum: { name: '플래티넘', img: './peral.jpg' },
+            gold: { name: '골드', img: './gold.jpg' },
+            silver: { name: '실버', img: './silver.jpg' },
+            bronze: { name: '브론즈', img: './bronze.jpg' }
         };
         const overwatchTiers = Object.keys(overwatchInfo);
 
@@ -610,7 +582,9 @@
                 if (isOw) {
                     const info = overwatchInfo[t];
                     labelHtml = `
-                        <div class="tier-icon-badge"><i class="fa-solid ${info.icon}"></i></div>
+                        <div class="tier-icon-badge">
+                            <img src="${info.img}" alt="${info.name}">
+                        </div>
                         <span>${info.name}</span>
                     `;
                 } else {
